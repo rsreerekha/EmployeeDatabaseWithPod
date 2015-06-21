@@ -15,7 +15,11 @@
 @interface AppDelegate ()
 
 @end
+
+
 static NSString *const PREFERENCE_KEY_MR_HAS_DATA = @"PREFERENCE_HAS_DATA_NAME";
+
+
 @implementation AppDelegate
 
 
@@ -67,22 +71,21 @@ static NSString *const PREFERENCE_KEY_MR_HAS_DATA = @"PREFERENCE_HAS_DATA_NAME";
     
     
         [[NSManagedObjectContext MR_defaultContext]
+         
          MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
              if (success)
                  NSLog(@"Successfully saved context 1");
              else
                  NSLog(@"Error saving context: %@", error.description);
          }];
+        
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:PREFERENCE_KEY_MR_HAS_DATA];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
 
     }
     
-    
-    // NSArray *names =[NSArray arrayWithObjects:ryan.name, justin.name,steve.name,antoine.name, nil];
-    // AppDelegate *delegate = ((AppDelegate *)[UIApplication sharedApplication].delegate);
-    //delegate.selectedArray= names ;
+  
 
     return YES;
 }

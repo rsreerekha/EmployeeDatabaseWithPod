@@ -13,6 +13,7 @@
 #import "Team.h"
 #import "EmployeeTableViewCell.h"
 #import "AppDelegate.h"
+#import <MagicalRecord/MagicalRecord.h>
 @interface EmployeeTableViewController ()
 
 @property NSMutableArray  *employeeArray;
@@ -22,21 +23,11 @@
 static NSString *const EMPLOYEE_NAME = @"name";
 static NSString *const EMPLOYEE_UUID = @"uuID";
 static NSString *const EMPLOYEE_SALARY = @"salary";
-
+//for search to work as per the user selection in settings bundle.
 @implementation EmployeeTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    
-    //self.employeeArray= [NSMutableArray arrayWithObjects:ryan,justin, steve, antoine, nil];
-    
-    //Employee *listOfname = [[Employee alloc]init];
-    
-    //self.names = [NSMutableArray arrayWithObject:listOfname.name];
-   // NSLog(@"list of name:%@",self.names);
-    
-   //self.names =[NSArray  arrayWithObjects:ryan.name, justin.name, steve.name, antoine.name, nil];
     
     
   }
@@ -79,6 +70,7 @@ static NSString *const EMPLOYEE_SALARY = @"salary";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString* EmployeeCell = @"EmployeeCell";
+    
     EmployeeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:EmployeeCell forIndexPath:indexPath];
     cell.employeeNamelabel.text = ((Employee *)(self.employeeArray[indexPath.row])).name;
     return cell;
@@ -93,11 +85,14 @@ static NSString *const EMPLOYEE_SALARY = @"salary";
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
+        //to delete the cell.
         Employee *firedEmployee = [self.employeeArray objectAtIndex:indexPath.row];
         [firedEmployee MR_deleteEntity];
+        
         [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
         
         [self.employeeArray removeObjectAtIndex:indexPath.row];

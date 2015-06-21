@@ -37,20 +37,22 @@ static const int EMPLOYEE_TEAM_FIELD_TAG = 4;
     self.title = self.employee.name ? self.employee.name : @"New Employee";
     self.employeeNameTextfield .text = self.employee.name;
     self. idTextfield.text = [NSString stringWithFormat:@"%@", self.employee.uuID];
+    //add if statement ,if idTextfield.text = 0 then show idTextfield.text = @""
+    
+    
     self.departmentNameTextfield .text = self.employee.departments.departmentname;
     self.teamNameField.text = self.employee.teams.teamname;
 
     NSNumber* salary = self.employee.salary;
     
-    
-    self.salaryTextfield.text = [self formatSalary:salary];
+   //self.salaryTextfield.text = [NSString stringWithFormat:@"%@", self.employee.salary];
+                                 
+                                 
+   self.salaryTextfield.text = [self formatSalary:salary];
     
     //[NSString stringWithFormat:@"%@", self.employee.salary];
     
-    //self.employeeNameTitle.text = self.employee.name;
-   // NSLog(@"yft :%@",self.employee.name);
-    
-    // Do any additional setup after loading the view.
+        
 }
 - (void)cancelAdd {
     [self.employee MR_deleteEntity];
@@ -68,6 +70,8 @@ static const int EMPLOYEE_TEAM_FIELD_TAG = 4;
 
 - (void)saveContext {
     [[NSManagedObjectContext MR_defaultContext]
+     
+     //using block.
      MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
          if (success)
              NSLog(@"Successfully saved context 2");
@@ -107,7 +111,7 @@ static const int EMPLOYEE_TEAM_FIELD_TAG = 4;
                 self.employee.departments.departmentname = textField.text;
                 break;
 //            case EMPLOYEE_SALARY_FIELD_TAG:
-//                
+//
 //                //self.employee.salary =[NSNumber numberWithInteger:[textField.text integerValue]];
 //                break;
                 
@@ -132,8 +136,13 @@ static const int EMPLOYEE_TEAM_FIELD_TAG = 4;
         
         NSMutableString *textFieldTextStr = [NSMutableString stringWithString:textField.text];
         
+        // Replace new char in Range for the salary TextField.
+        
+        
         [textFieldTextStr replaceCharactersInRange:range withString:newString];
+        
         //moving the number towards left
+        //replaces the $ and , if there is any.
         newString = [textFieldTextStr stringByReplacingOccurrencesOfString:@"$" withString:@""];
         newString = [newString stringByReplacingOccurrencesOfString:@"." withString:@""];
         newString = [newString stringByReplacingOccurrencesOfString:@"," withString:@""];
